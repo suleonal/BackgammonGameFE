@@ -1,0 +1,172 @@
+html {
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+body{
+    height: 100%;
+    margin: 0px;
+
+    padding: 0px;
+}
+
+/* Panels */
+.main{
+    width: 100%;
+    height: 100%;
+    background-position: center;
+    margin: auto;
+    position: fixed;
+    background-color: #355458;
+}
+
+.board {
+    background-image: url("../img/board.jpg");
+    position: relative;
+    width: 50%;
+    height: 366px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    margin: 0px 0 0 0;
+}
+
+.banner{    
+    height:90px;
+    background-color: #304953;
+    text-align: center;
+    vertical-align: top;
+    color: #fff ;
+    font-size: 50px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding-bottom: 50px;
+}
+
+.gamePanel{
+    height:100px;
+    background-color:  #355458;
+    position: relative;
+    z-index: 999;
+}
+
+
+.gamePanel table{
+    border: 0px;  
+    width: 100%;
+}
+
+.winnerPanel , .playerPanel{
+    width: 100%; display: none
+}
+
+.playerLabel{
+    color: red;
+}
+
+
+
+.board table  {
+   
+    margin-left: 3%;
+    margin-right: 3%;
+    width: 96%;
+    height: 600px;
+    text-align: center;
+    font-size: 50px;
+    display: block;
+}
+
+.board .pit{
+  
+    width: 8%;
+}
+
+.board .treasure{
+  
+    width: 4%;
+}
+
+.board .pitText{
+    color: #355458;
+}
+
+.boardCenter{
+  
+    width: 7%;   
+}
+
+/*Button*/
+.button{
+    cursor: pointer;
+    color: #fff;
+    text-decoration: none;
+    padding: 0px;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: stretch;
+    justify-content: center;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid;
+    font-size: 2rem;
+    line-height: 10;
+    border-radius: .35rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    box-sizing: border-box;
+    word-wrap: break-word;
+    font-family: Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+}
+
+.fas{
+    font-weight: 900;
+    font-family: "Font Awesome 5 Free";
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    line-height: 1;
+}
+
+.text-white-50{
+    color: rgba(255,255,255,.5) !important;
+}
+
+.icon{
+    padding: .5rem 1rem;
+    background: rgba(0,0,0,.15);
+    display: inline-block;
+}
+
+.fa-flag{
+    content: "X";
+}
+
+.text{
+    padding: .5rem 1rem;
+    display: inline-block;
+    text-align: center;
+    font-weight: 400;
+}
+.startButton{
+    background-color: #17a673;
+    border-color: #169b6b;
+    margin-top: 30px;
+    margin-left: 30px;
+}
+
+.bigText{
+    font-weight: 400;
+    font-size: 2rem;
+    color: #fff;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    box-sizing: border-box;
+    word-wrap: break-word;
+    font-family: Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    float: right;
+}
