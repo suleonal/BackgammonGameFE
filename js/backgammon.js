@@ -34,11 +34,11 @@ function rollDice() {
 }
 
 function sendPlayerMove() {
-    request = $.get(URL_backgammon_API + "/move/" + backgammonGameInfo.sessionId + "/" + backgammonGameInfo.moveSrc + "/" +backgammonGameInfo.moveDest);
+    request = $.get(URL_backgammon_API + "/move/" + backgammonGameInfo.sessionId + "/" + backgammonGameInfo.moveSrc + "/" + backgammonGameInfo.moveDest);
     request.done(function (result) {
         backgammonGameInfo.moveSrc = magicNumber;
         backgammonGameInfo.moveDest = magicNumber;
-        if(result.backgammonBoard.currentPlayer != backgammonGameInfo.backgammonBoard.currentPlayer){
+        if (result.backgammonBoard.currentPlayer != backgammonGameInfo.backgammonBoard.currentPlayer) {
             $(".diceData").html("<li>Roll Dice</li>");
         }
         backgammonGameInfo.backgammonBoard = result.backgammonBoard;
@@ -82,6 +82,31 @@ function drawBoard(backgammonBoard) {
 
     }
 
+    punishPlayerOne = "";
+    if (backgammonBoard.punishZone.ONE > 0) {
+
+        for (i = 0; i < backgammonBoard.punishZone.ONE; i++) {
+            punishPlayerOne = punishPlayerOne + '<li><a href="#" class="stoneButton" id="stoneButton_' + -1 + '" ><img src="./img/white-stamp.png"/></a></li>';
+        }
+
+    } else {
+        punishPlayerOne = "<li><a href='#' class='stoneButton' id='stoneButton_" + -1 + "' ><span>P</span></a></li>";
+    }
+    $("#punish_ONE").html(punishPlayerOne);
+
+    punishPlayerTwo = "";
+    if (backgammonBoard.punishZone.TWO > 0) {
+
+        for (i = 0; i < backgammonBoard.punishZone.TWO; i++) {
+            punishPlayerTwo = punishPlayerTwo + '<li><a href="#" class="stoneButton" id="stoneButton_' + -3 + '" ><img src="./img/black-stamp.png"/></a></li>';
+        }
+
+    } else {
+        punishPlayerTwo = "<li><a href='#' class='stoneButton' id='stoneButton_" + -3 + "' ><span>P</span></a></li>";
+    }
+
+    $("#punish_TWO").html(punishPlayerTwo);
+
     if (backgammonBoard.moves.length > 0) {
         dicesData = "";
         for (const moveId in backgammonBoard.moves) {
@@ -104,7 +129,7 @@ function bindButtons() {
         startGame();
     });
 
-    
+
     $(".diceButton").click(function () {
         rollDice();
     });
@@ -157,8 +182,12 @@ function createBoardButtons() {
 
                 rowData = rowData + '<td class="pit ' + pitType + '"><ul id="' + (pitId) + '" class="no-bullets"><li>' + (pitId) + '</li></ul>' +
                     '</td>';
-                if (pitId === 6 || pitId == 17) {
-                    rowData = rowData + '<td class="boardCenter">&nbsp;</td>';
+
+                pitType = "";
+                if (pitId === 6 || pitId == 17) { //punishZone
+                    punishId = "punish_" + (pitId == 6 ? 'ONE' : 'TWO');
+
+                    rowData = rowData + '<td class="boardCenter ' + pitType + '"><ul id="' + (punishId) + '" class="no-bullets"><li>&nbsp;</li></ul></td>';
                 }
 
             }
