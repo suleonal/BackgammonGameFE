@@ -1,23 +1,66 @@
 <html>
-    <head>
-        <title>Sule Backgammon Game v1.0</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="css/backgammon.css" rel="stylesheet" type="text/css"/>
-        <script src="js/thirdparty/jquery-3.6.0.min.js" type="text/javascript" ></script>
-        <script src="js/backgammon.js" type="text/javascript"></script>
-    </head>
-    <body>
-        <div class="main">
-            <div class="board"> <!-- Board Main Graphics-->
-                <table >
-                    <tbody></tbody> 
-                </table>
-            </div>
+
+<head>
+    <title>Sule Backgammon Game v1.0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/backgammon.css" rel="stylesheet" type="text/css" />
+    <script src="js/thirdparty/jquery-3.6.0.min.js" type="text/javascript"></script>
+    <script src="js/backgammon.js" type="text/javascript"></script>
+</head>
+
+<body>
+    <div class="main">
+        <div class="board">
+            <!-- Board Main Graphics-->
+            <table>
+                <tbody></tbody>
+            </table>
         </div>
-        <script>
-            $(document).ready(function () {
-                initApplication();
-            })
-        </script>
-    </body>
+        <div class="gamePanel">
+            <!--Game Panel-->
+            <table>
+                <tr>
+                    <td>
+                        <div class="menuPanel">
+                            <a class="button startButton" href="#" >
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-flag">
+                                    </i>
+                                </span>
+                                <span class="text">Start Backgammon Game</span>
+                            </a>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="winnerPanel">
+                            <!-- Winner Panel-->
+                            <span class="bigText winnerName">
+                            </span>
+                            <span class="bigText winnerLabel">
+                                Winner is:&nbsp;
+                            </span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="playerPanel">
+                            <!-- Current Player Panel-->
+                            <span class="bigText playerName">
+                            </span>
+                            <span class="bigText playerLabel">
+                                Current Player:&nbsp;
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+    <script>
+        $(document).ready(function () {
+            initApplication();
+        })
+    </script>
+</body>
+
 </html>
