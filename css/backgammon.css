@@ -84,6 +84,15 @@ a{
     text-align: center;
     font-size: 50px;
     display: block;
+    border: solid 2px;
+}
+
+.board table tr  {
+    border: solid 2px;
+}
+
+.board table td  {
+    border: solid 2px;
 }
 
 .board .pit{
@@ -131,7 +140,7 @@ a{
     text-align: center;
     vertical-align: middle;
     border: 1px solid;
-    font-size: 0.2rem;
+    font-size: 1rem;
     line-height: 11;
     border-radius: .35rem;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
@@ -175,9 +184,10 @@ a{
 .startButton{
     background-color: #17a673;
     border-color: #169b6b;
-    margin-top: -650px;
+    margin-top: -550px;
     border-radius: 20px;
-    margin-left: 930px;
+    border-width: 10px;
+    margin-left: 1200px;
 }
 
 .bigText{

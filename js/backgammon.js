@@ -144,6 +144,16 @@ function bindStoneButtons() {
         } else {
             backgammonGameInfo.moveDest = $(this).attr("id").substr(12);
         }
+        if(backgammonGameInfo.currentPlayer == "ONE" &&(( backgammonGameInfo.moveDest  - backgammonGameInfo.moveSrc  )<=0)){
+            alert("Wrong Direction");
+            return;
+        }
+
+        if(backgammonGameInfo.currentPlayer == "TWO" &&(( backgammonGameInfo.moveDest  - backgammonGameInfo.moveSrc  )>=0)){
+            alert("Wrong Direction");
+            return;
+        }
+
         if (backgammonGameInfo.moveSrc != magicNumber && backgammonGameInfo.moveDest != magicNumber) {
             sendPlayerMove();
         }
@@ -163,6 +173,7 @@ function createBoardButtons() {
     boardRows = [0, 1, 2]
     $.each(boardRows, function (index, boardRow) {
         rowData = "<tr>";
+        //Roll dices
         if (boardRow == 1) {
 
             rowData = "<td id='Dices' colspan='13'><a href='#' class='diceButton' ><ul class='no-bullets diceData'><li>Roll Dices</li></ul></a></td>"
@@ -171,7 +182,7 @@ function createBoardButtons() {
 
                 pitType = "";
 
-
+                //pit 12
                 if (boardRow == 0) {
                     pitId = Math.abs(pit - 12) + (boardRow * pitSize) - 1;
                     pitType = "pitTop";
@@ -189,6 +200,10 @@ function createBoardButtons() {
 
                     rowData = rowData + '<td class="boardCenter ' + pitType + '"><ul id="' + (punishId) + '" class="no-bullets"><li>&nbsp;</li></ul></td>';
                 }
+
+                pitType = "";
+                
+
 
             }
         rowData = rowData + "</tr>";
