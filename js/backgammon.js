@@ -35,19 +35,23 @@ function rollDice() {
 
 function sendPlayerMove() {
     request = $.get(URL_backgammon_API + "/move/" + backgammonGameInfo.sessionId + "/" + backgammonGameInfo.moveSrc + "/" + backgammonGameInfo.moveDest);
+    
     request.done(function (result) {
-        backgammonGameInfo.moveSrc = magicNumber;
-        backgammonGameInfo.moveDest = magicNumber;
         if (result.backgammonBoard.currentPlayer != backgammonGameInfo.backgammonBoard.currentPlayer) {
             $(".diceData").html("<li>Roll Dice</li>");
         }
+        console.log("[Success] New Move: player: "+backgammonGameInfo.backgammonBoard.currentPlayer+" "+ backgammonGameInfo.moveSrc + " --> "+ backgammonGameInfo.moveDest)
+        backgammonGameInfo.moveSrc = magicNumber;
+        backgammonGameInfo.moveDest = magicNumber;
         backgammonGameInfo.backgammonBoard = result.backgammonBoard;
         drawBoard(backgammonGameInfo.backgammonBoard);
     });
     request.fail(function (xhr, statusText, errorThrown) {
-        alert(JSON.parse(xhr.responseText).message);
+        msg = JSON.parse(xhr.responseText).message;
+        console.log("[Fail] New Move: player: "+backgammonGameInfo.backgammonBoard.currentPlayer+" "+ backgammonGameInfo.moveSrc + " --> "+ backgammonGameInfo.moveDest+" , msg:"+msg)
         backgammonGameInfo.moveSrc = magicNumber;
         backgammonGameInfo.moveDest = magicNumber;
+        alert(msg);
     });
 }
 
@@ -137,20 +141,49 @@ function bindButtons() {
 
 }
 
+
+function displayPossibleDestinations(){
+
+    backgammonBoard = backgammonGameInfo.backgammonBoard;
+    src = backgammonGameInfo.moveSrc ;
+
+    for(i = 0;i<24;i++){
+        $("#td_pit_"+i).css('border-color', 'black');
+    }
+
+    $("#td_pit_"+src).css('border-color', 'blue');
+
+    for (const moveId in backgammonBoard.moves) {
+        dice = backgammonBoard.moves[moveId];
+        possibleDest= parseInt(src) + ( (backgammonBoard.currentPlayer == "ONE" ? 1 : -1) * dice  );
+        $("#td_pit_"+possibleDest).css('border-color', 'red');
+    }
+}
+
 function bindStoneButtons() {
     $(".stoneButton").click(function () {
+        for(i = 0;i<24;i++){
+            $("#td_pit_"+i).css('border-color', 'black');
+        }
+    
         if (backgammonGameInfo.moveSrc == magicNumber) {
             backgammonGameInfo.moveSrc = $(this).attr("id").substr(12);
+            displayPossibleDestinations();
+            return;
         } else {
             backgammonGameInfo.moveDest = $(this).attr("id").substr(12);
         }
-        if(backgammonGameInfo.currentPlayer == "ONE" &&(( backgammonGameInfo.moveDest  - backgammonGameInfo.moveSrc  )<=0)){
+        if(backgammonGameInfo.backgammonBoard.currentPlayer == "ONE" &&(( backgammonGameInfo.moveDest  - backgammonGameInfo.moveSrc  )<=0)&& (backgammonGameInfo.moveSrc>=0)){
             alert("Wrong Direction");
+            backgammonGameInfo.moveDest = magicNumber;
+            backgammonGameInfo.moveSrc = magicNumber;
             return;
         }
 
-        if(backgammonGameInfo.currentPlayer == "TWO" &&(( backgammonGameInfo.moveDest  - backgammonGameInfo.moveSrc  )>=0)){
+        if(backgammonGameInfo.backgammonBoard.currentPlayer == "TWO" &&(( backgammonGameInfo.moveDest  - backgammonGameInfo.moveSrc  )>=0)&& (backgammonGameInfo.moveSrc>=0)){
             alert("Wrong Direction");
+            backgammonGameInfo.moveSrc = magicNumber;
+            backgammonGameInfo.moveDest = magicNumber;
             return;
         }
 
@@ -191,8 +224,7 @@ function createBoardButtons() {
                     pitType = "pitBottom";
                 }
 
-                rowData = rowData + '<td class="pit ' + pitType + '"><ul id="' + (pitId) + '" class="no-bullets"><li>' + (pitId) + '</li></ul>' +
-                    '</td>';
+                rowData = rowData + '<td id="td_pit_'+pitId+'" class="pit ' + pitType + '"><ul id="' + (pitId) + '" class="no-bullets"><li>' + (pitId) + '</li></ul></td>';
 
                 pitType = "";
                 if (pitId === 6 || pitId == 17) { //punishZone
