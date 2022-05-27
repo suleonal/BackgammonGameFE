@@ -35,12 +35,12 @@ function rollDice() {
 
 function sendPlayerMove() {
     request = $.get(URL_backgammon_API + "/move/" + backgammonGameInfo.sessionId + "/" + backgammonGameInfo.moveSrc + "/" + backgammonGameInfo.moveDest);
-    
+
     request.done(function (result) {
         if (result.backgammonBoard.currentPlayer != backgammonGameInfo.backgammonBoard.currentPlayer) {
             $(".diceData").html("<li>Roll Dice</li>");
         }
-        console.log("[Success] New Move: player: "+backgammonGameInfo.backgammonBoard.currentPlayer+" "+ backgammonGameInfo.moveSrc + " --> "+ backgammonGameInfo.moveDest)
+        console.log("[Success] New Move: player: " + backgammonGameInfo.backgammonBoard.currentPlayer + " " + backgammonGameInfo.moveSrc + " --> " + backgammonGameInfo.moveDest)
         backgammonGameInfo.moveSrc = magicNumber;
         backgammonGameInfo.moveDest = magicNumber;
         backgammonGameInfo.backgammonBoard = result.backgammonBoard;
@@ -48,7 +48,7 @@ function sendPlayerMove() {
     });
     request.fail(function (xhr, statusText, errorThrown) {
         msg = JSON.parse(xhr.responseText).message;
-        console.log("[Fail] New Move: player: "+backgammonGameInfo.backgammonBoard.currentPlayer+" "+ backgammonGameInfo.moveSrc + " --> "+ backgammonGameInfo.moveDest+" , msg:"+msg)
+        console.log("[Fail] New Move: player: " + backgammonGameInfo.backgammonBoard.currentPlayer + " " + backgammonGameInfo.moveSrc + " --> " + backgammonGameInfo.moveDest + " , msg:" + msg)
         backgammonGameInfo.moveSrc = magicNumber;
         backgammonGameInfo.moveDest = magicNumber;
         alert(msg);
@@ -85,7 +85,7 @@ function drawBoard(backgammonBoard) {
         $("#" + pit).html(listData);
 
     }
-
+    //punish
     punishPlayerOne = "";
     if (backgammonBoard.punishZone.ONE > 0) {
 
@@ -119,7 +119,27 @@ function drawBoard(backgammonBoard) {
         }
         $(".diceData").html(dicesData);
     }
+    //treasure
+    treasurePlayerOne = "";
+    if (backgammonBoard.treasureZone.ONE > 0) {
+        for (i = 0; i < backgammonBoard.treasureZone.ONE; i++) {
+            treasurePlayerOne = treasurePlayerOne + '<li><a href="#" class="stoneButton" id="stoneButton_' + -2 + '" ><img src="./img/white-stamp.png"/></a></li>';
+        }
 
+    } else {
+        treasurePlayerOne = "<li><a href='#' class='stoneButton' id='stoneButton_" + -2 + "' ><span>T</span></a></li>";
+    }
+    $("#treasure_ONE").html(treasurePlayerOne);
+
+    treasurePlayerTwo = "";
+    if (backgammonBoard.treasureZone.TWO > 0) {
+        for (i = 0; i < backgammonBoard.treasureZone.TWO; i++) {
+            treasurePlayerTwo = treasurePlayerTwo + '<li><a href="#" class="stoneButton" id="stoneButton_' + -4 + '" ><img src="./img/black-stamp.png"/></a></li>';
+        }
+    } else {
+        treasurePlayerTwo = "<li><a href='#' class='stoneButton' id='stoneButton_" + -4 + "' ><span>T</span></a></li>";
+    }
+    $("#treasure_TWO").html(treasurePlayerTwo);
 
     if (backgammonBoard.gameState === 'COMPLETED') {
         completeGame(backgammonBoard);
@@ -142,30 +162,30 @@ function bindButtons() {
 }
 
 
-function displayPossibleDestinations(){
+function displayPossibleDestinations() {
 
     backgammonBoard = backgammonGameInfo.backgammonBoard;
-    src = backgammonGameInfo.moveSrc ;
+    src = backgammonGameInfo.moveSrc;
 
-    for(i = 0;i<24;i++){
-        $("#td_pit_"+i).css('border-color', 'black');
+    for (i = 0; i < 24; i++) {
+        $("#td_pit_" + i).css('border-color', 'black');
     }
 
-    $("#td_pit_"+src).css('border-color', 'blue');
+    $("#td_pit_" + src).css('border-color', 'blue');
 
     for (const moveId in backgammonBoard.moves) {
         dice = backgammonBoard.moves[moveId];
-        possibleDest= parseInt(src) + ( (backgammonBoard.currentPlayer == "ONE" ? 1 : -1) * dice  );
-        $("#td_pit_"+possibleDest).css('border-color', 'red');
+        possibleDest = parseInt(src) + ((backgammonBoard.currentPlayer == "ONE" ? 1 : -1) * dice);
+        $("#td_pit_" + possibleDest).css('border-color', 'red');
     }
 }
 
 function bindStoneButtons() {
     $(".stoneButton").click(function () {
-        for(i = 0;i<24;i++){
-            $("#td_pit_"+i).css('border-color', 'black');
+        for (i = 0; i < 24; i++) {
+            $("#td_pit_" + i).css('border-color', 'black');
         }
-    
+
         if (backgammonGameInfo.moveSrc == magicNumber) {
             backgammonGameInfo.moveSrc = $(this).attr("id").substr(12);
             displayPossibleDestinations();
@@ -173,14 +193,14 @@ function bindStoneButtons() {
         } else {
             backgammonGameInfo.moveDest = $(this).attr("id").substr(12);
         }
-        if(backgammonGameInfo.backgammonBoard.currentPlayer == "ONE" &&(( backgammonGameInfo.moveDest  - backgammonGameInfo.moveSrc  )<=0)&& (backgammonGameInfo.moveSrc>=0)){
+        if (backgammonGameInfo.backgammonBoard.currentPlayer == "ONE" && ((backgammonGameInfo.moveDest - backgammonGameInfo.moveSrc) <= 0) && (backgammonGameInfo.moveSrc >= 0) && (backgammonGameInfo.moveSrc <= 0)) {
             alert("Wrong Direction");
             backgammonGameInfo.moveDest = magicNumber;
             backgammonGameInfo.moveSrc = magicNumber;
             return;
         }
 
-        if(backgammonGameInfo.backgammonBoard.currentPlayer == "TWO" &&(( backgammonGameInfo.moveDest  - backgammonGameInfo.moveSrc  )>=0)&& (backgammonGameInfo.moveSrc>=0)){
+        if (backgammonGameInfo.backgammonBoard.currentPlayer == "TWO" && ((backgammonGameInfo.moveDest - backgammonGameInfo.moveSrc) >= 0) && (backgammonGameInfo.moveSrc >= 0) && (backgammonGameInfo.moveSrc >= 0)) {
             alert("Wrong Direction");
             backgammonGameInfo.moveSrc = magicNumber;
             backgammonGameInfo.moveDest = magicNumber;
@@ -209,7 +229,7 @@ function createBoardButtons() {
         //Roll dices
         if (boardRow == 1) {
 
-            rowData = "<td id='Dices' colspan='13'><a href='#' class='diceButton' ><ul class='no-bullets diceData'><li>Roll Dices</li></ul></a></td>"
+            rowData = "<td id='Dices' colspan='14'><a href='#' class='diceButton' ><ul class='no-bullets diceData'><li>Roll Dices</li></ul></a></td>"
         } else
             for (pit = 0; pit < pitSize; pit++) {
 
@@ -224,7 +244,7 @@ function createBoardButtons() {
                     pitType = "pitBottom";
                 }
 
-                rowData = rowData + '<td id="td_pit_'+pitId+'" class="pit ' + pitType + '"><ul id="' + (pitId) + '" class="no-bullets"><li>' + (pitId) + '</li></ul></td>';
+                rowData = rowData + '<td id="td_pit_' + pitId + '" class="pit ' + pitType + '"><ul id="' + (pitId) + '" class="no-bullets"><li>' + (pitId) + '</li></ul></td>';
 
                 pitType = "";
                 if (pitId === 6 || pitId == 17) { //punishZone
@@ -232,10 +252,11 @@ function createBoardButtons() {
 
                     rowData = rowData + '<td class="boardCenter ' + pitType + '"><ul id="' + (punishId) + '" class="no-bullets"><li>&nbsp;</li></ul></td>';
                 }
+                if (pitId === 0 || pitId == 23) { //treasureZone
+                    treasureId = "treasure_" + (pitId == 23 ? 'ONE' : 'TWO');
 
-                pitType = "";
-                
-
+                    rowData = rowData + '<td class="boardCenter ' + pitType + '"><ul id="' + (treasureId) + '" class="no-bullets"><li>&nbsp;</li></ul></td>';
+                }
 
             }
         rowData = rowData + "</tr>";
